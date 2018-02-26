@@ -23,7 +23,7 @@ Entities of this application are defined in [Domain.java](src/main/java/com/java
 
 ## Execution
 
-### To run build a jar with dependencies and run it
+### To build a jar with dependencies and run it
 First build the jar packaje:
 ```
 mvn clean package
