@@ -5,7 +5,7 @@ This Stocks application is a reactive one:
 * It is responsive: to ensure a high-quality user experience, this app aims for high throughput and low latency. Its footprint will increase by the number of stocks registered, in which case vertical and even horizontal scaling can be easily considered and integrated. 
 * It is resilient: Aspects like delegation, isolation, containtment and replication are handled or can be included with a relative low complexity added to the codebase.
 * It is elastic: Different workloads are supported with the same guaranties. Either vertical or horizontal scaling can be addressed by means of clustering, distributed data replication and/or sharding.
-* It is messge-driven: Components of this application are decoupled by clearly defining boundaries between them by the definition and processing of messages in an asynchronous non-blocking manner.
+* It is message-driven: Components of this application are decoupled by clearly defining boundaries between them by the definition and exchange of messages in asynchronous non-blocking manner.
 
 A set of RESTful web services are supported to create, retrieve, update and delete stocks. JSON is the format for messages sent and received by this application.
 
@@ -15,9 +15,9 @@ The main entry point of this application is the  [StocksServer.java](src/main/ja
 
 Routes for Akka Http processing can be found in [StockRoutes.java](src/main/java/com/javaigua/stocks/api/StockRoutes.java).
 
-An instance of the actor [StockRegistryActor.java](src/main/java/com/javaigua/stocks/actors/StockRegistryActor.java) is a distributed registry for stocks handled in this application. Every stock entity is an actor supervised by this one, therefore the processing of messages sent to this actor is distributed. A reference lookup, by the given stock id, is performed upon arrival of every message sent to this actor. The message is then forwarded to this stock actor, except when the whole list of stocks is asked, in which case all children data is aggreagated and returned.
+An instance of the actor [StockRegistryActor.java](src/main/java/com/javaigua/stocks/actors/StockRegistryActor.java) is a distributed registry for stocks handled in this application. Every stock entity has an actor supervised by this one. An actor reference lookup by the given stock id is performed upon arrival of every message sent to this actor, new ones are created if needed. Messages are then forwarded to that stock actor, except when the whole list of stocks is asked in which case all children data is aggreagated and returned by iterating through all supervised actors created by this one.
 
-Every instance of the actor [StockActor.java](src/main/java/com/javaigua/stocks/actors/StockActor.java) controls a single Stock entity in this application. This actor is created and supervised by the registry. It performs operations on a single Stock instance variable. Messages sent to this actor mutate or query this domain object, and since messages are processed sequentially one-by-one, there is no need to worry about concurrent modifications or other side effects.
+Every instance of the  [StockActor.java](src/main/java/com/javaigua/stocks/actors/StockActor.java) controls a single Stock entity. It performs operations on a single Stock instance variable. Messages sent to this actor mutate or query this domain object. Since messages are processed sequentially one-by-one, there is no need to worry about concurrent modifications or other side effects.
 
 Messages shared between actors can be found in [StockRegistryMessages.java](src/main/java/com/javaigua/stocks/actors/StockRegistryMessages.java).
 
