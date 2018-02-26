@@ -17,6 +17,10 @@ An instance of the actor [StockRegistryActor.java](src/main/java/com/javaigua/st
 
 Every instance of the actor [StockActor.java](src/main/java/com/javaigua/stocks/actors/StockRegistryActor.java) controls a single Stock entity in this application. This actor is created and supervised by the registry. It performs operations on a single Stock instance variable. Messages sent to this actor mutate or query this domain object, and since messages are processed sequentially one-by-one, there is no need to worry about concurrent modifications or other side effects.
 
+Messages shared between actors can be found in [StockRegistryMessages.java](src/main/java/com/javaigua/stocks/actors/StockRegistryMessages.java).
+
+Entities of this application are defined in [Domain.java](src/main/java/com/javaigua/stocks/Domain.java).
+
 ## Execution
 
 ### To run build a jar with dependencies and run it
@@ -28,7 +32,7 @@ Now run the app:
 ```
 java -jar target/stocks-javaigua-1.0-with-dependencies.jar
 ```
-An example of http requests with the curl command line utility can be found in [curl_commands.txt](src/main/test/resources/curl_commands.txt).
+An example of http requests with the curl command line utility can be found in [curl_commands.txt](src/test/resources/curl_commands.txt).
 
 ### To run with maven
 ```
