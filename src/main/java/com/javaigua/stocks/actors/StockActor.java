@@ -53,7 +53,7 @@ public class StockActor extends AbstractActor {
           if (this.stock != null) {
             this.stock = new Stock(
               this.stock.getId(),
-              this.stock.getName(),
+              updateStock.getStock().getName(),
               updateStock.getStock().getCurrentPrice(),
               Instant.now());
             getSender().tell(new StockRegistryMessages.ActionPerformed(
