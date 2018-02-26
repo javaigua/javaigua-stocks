@@ -1,5 +1,6 @@
-curl -H "Content-Type: application/json" -d '{"id":"1","name":"bar","currentPrice":"1"}' http://127.0.0.1:8080/stocks
+curl -H "Content-Type: application/json" -d '{"id":"1","name":"bar","currentPrice":"1"}' -X POST http://127.0.0.1:8080/stocks
 curl -H "Content-Type: application/json" -d '{"name":"bar1","currentPrice":"2"}' -X PUT http://127.0.0.1:8080/stocks/1
-curl -H "Content-Type: application/json" http://127.0.0.1:8080/stocks/1
-curl -H "Content-Type: application/json" http://127.0.0.1:8080/stocks
+curl -H "Content-Type: application/json" -X GET http://127.0.0.1:8080/stocks/1
+curl -H "Content-Type: application/json" -X GET http://127.0.0.1:8080/stocks
 curl -H "Content-Type: application/json" -X DELETE http://127.0.0.1:8080/stocks/1
+
