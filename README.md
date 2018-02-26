@@ -13,6 +13,8 @@ A set of RESTful web services are supported to create, retrieve, update and dele
 
 The main entry point of this application is the  [StocksServer.java](src/main/java/com/javaigua/stocks/api/StocksServer.java). An Akka actor system is created and binded to an http server that handles requests to create, retrieve, update and delete stocks from an internal stock registry.
 
+Routes for Akka Http processing can be found in [StockRoutes.java](src/main/java/com/javaigua/stocks/api/StockRoutes.java).
+
 An instance of the actor [StockRegistryActor.java](src/main/java/com/javaigua/stocks/actors/StockRegistryActor.java) is a distributed registry for stocks handled in this application. Every stock entity is an actor supervised by this one, therefore the processing of messages sent to this actor is distributed. A reference lookup, by the given stock id, is performed upon arrival of every message sent to this actor. The message is then forwarded to this stock actor, except when the whole list of stocks is asked, in which case all children data is aggreagated and returned.
 
 Every instance of the actor [StockActor.java](src/main/java/com/javaigua/stocks/actors/StockActor.java) controls a single Stock entity in this application. This actor is created and supervised by the registry. It performs operations on a single Stock instance variable. Messages sent to this actor mutate or query this domain object, and since messages are processed sequentially one-by-one, there is no need to worry about concurrent modifications or other side effects.
