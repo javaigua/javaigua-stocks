@@ -53,14 +53,14 @@ public class StockActor extends AbstractActor {
           if (this.stock != null) {
             this.stock = new Stock(
               this.stock.getId(),
-              updateStock.getStock().getName(),
-              updateStock.getStock().getCurrentPrice(),
+              Optional.ofNullable(updateStock.getStock().getName()).orElse(this.stock.getName()),
+              Optional.ofNullable(updateStock.getStock().getCurrentPrice()).orElse(this.stock.getCurrentPrice()),
               Instant.now());
-            getSender().tell(new StockRegistryMessages.ActionPerformed(
-              String.format("Stock %s updated.", updateStock.getStock().getId())), getSelf());
+            getSender().tell(
+              new StockRegistryMessages.ActionPerformed(String.format("Stock %s updated.", updateStock.getStock().getId())),
+              getSelf());
           } else {
-            getSender().tell(new StockRegistryMessages.ActionPerformed(
-              String.format("Nothing to update.", updateStock.getStock().getId())), getSelf());
+            getSender().tell(new StockRegistryMessages.ActionPerformed(String.format("Nothing to update.")), getSelf());
             getContext().stop(getSelf());
           }
         }

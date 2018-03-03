@@ -2,12 +2,12 @@
 A take-home-assigment, by Javier Igua.
 
 This Stocks application is a reactive one:
-* It is responsive: to ensure a high-quality user experience, this app aims for high throughput and low latency. Its footprint will increase by the number of stocks registered, in which case vertical and even horizontal scaling can be easily considered and integrated. 
-* It is resilient: Aspects like delegation, isolation, containtment and replication are handled or can be included with a relative low complexity added to the codebase.
-* It is elastic: Different workloads are supported with the same guaranties. Either vertical or horizontal scaling can be addressed by means of clustering, distributed data replication and/or sharding.
-* It is message-driven: Components of this application are decoupled by clearly defining boundaries between them by the definition and exchange of messages in asynchronous non-blocking manner.
+* It is responsive: to ensure a high-quality user experience, this app aims for high throughput and low latency. Its footprint will increase by the number of stocks registered, in which case vertical scaling (up) and even horizontal scaling (out) can be easily considered and integrated. 
+* It is resilient: Aspects like delegation, isolation and containtment (TODO: replication) are handled and can be optimized with a relative low complexity added to the codebase.
+* It is elastic: Different workloads are supported with the same guaranties by scaling out to a much bigger cluster of nodes. Replication can by addressed by means of distributed data replication (Akka cluster singleton or conflict free distributed data types modules) and/or sharding.
+* It is message-driven: Components of this application are decoupled and exchange inmutable messages in asynchronous non-blocking manner. Boundaries between them are kept by these messages, where processing is isolated and performed in first-come first-served semantics.
 
-A set of RESTful web services are supported to create, retrieve, update and delete stocks. JSON is the format for messages sent and received by this application.
+A set of RESTful (Akka Http) web services are supported to create, retrieve, update and delete stocks. JSON is the format for the messages sent and received by this system.
 
 ## Implementations details
 
@@ -25,16 +25,26 @@ Entities of this application are defined in [Domain.java](src/main/java/com/java
 
 ## Execution
 
-### To build a jar with dependencies and run it
+### To build a jar with dependencies
 First build the jar packaje:
 ```
 mvn clean package
 ```
-Now run the app:
+
+### Run a cluster with a single node
+Now run a cluster of a single node:
 ```
 java -jar target/stocks-javaigua-1.0-with-dependencies.jar
 ```
 An example of http requests with the curl command line utility can be found in [curl_commands.txt](src/test/resources/curl_commands.txt).
+
+### Add another node to the cluster
+
+Add a new node to the cluster: 
+```
+java -Dapplication.exposed-port=8081 -Dclustering.port=2552 -jar target/stocks-javaigua-1.0-with-dependencies.jar
+```
+FIXME: This cluster does not share data yet. Try implementing Akka Cluster Singleton or Akka Sharding for the registry.
 
 ### To run with maven
 ```
